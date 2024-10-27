@@ -1,4 +1,4 @@
-# OG Pong by Kimani Muhammad
+# Pong by Kimani Muhammad
 import sys
 
 import pygame
@@ -162,8 +162,6 @@ def play():
 def options():
     global is_cpu_controlled, ball_color, volume_level
 
-    pygame.mixer.music.set_volume(volume_level)
-
     slider_width = 300
     slider_height = 10
     slider_x = 640 - slider_width // 2
@@ -172,6 +170,7 @@ def options():
     handle_width = 20
     handle_x = slider_x + volume_level * slider_width - handle_width // 2
     handle_y = slider_y - (handle_width // 2 - slider_height // 2)
+    dragging = False
 
     while True:
         options_mouse_pos = pygame.mouse.get_pos()
@@ -239,22 +238,21 @@ def options():
                     ball_color = (0, 0, 255)
                 if options_back.checkForInput(options_mouse_pos):
                     return
-                if slider_x <= options_mouse_pos[0] <= slider_x + slider_width:
-                    # Move handle to mouse pos
-                    handle_x = options_mouse_pos[0] - handle_width // 2
-                    # Calculate the new volume
+                # Check if mouse pos is within the handle
+                if ((handle_x <= options_mouse_pos[0] <= handle_x + handle_width) and
+                        (handle_y <= options_mouse_pos[1] <= handle_y + handle_width)):
+                    dragging = True
+            if event.type == pygame.MOUSEBUTTONUP:
+                dragging = False  # Stop dragging on mouse up
+
+            if event.type == pygame.MOUSEMOTION:
+                # Allow dragging volume if
+                if dragging:
+                    handle_x = max(slider_x, min(options_mouse_pos[0] - handle_width // 2,
+                                                 slider_x + slider_width - handle_width))
                     volume_level = (handle_x - slider_x + handle_width // 2) / slider_width
-                    # Update the volume, must be between 0.0 and 1.0
                     volume_level = max(0.0, min(1.0, volume_level))
                     pygame.mixer.music.set_volume(volume_level)
-            if event.type == pygame.MOUSEMOTION:
-                # Allow dragging volume
-                if pygame.mouse.get_pressed()[0]:
-                    if slider_x <= options_mouse_pos[0] <= slider_x + slider_width:
-                        handle_x = options_mouse_pos[0] - handle_width // 2
-                        volume_level = (handle_x - slider_x + handle_width // 2) / slider_width
-                        volume_level = max(0.0, min(1.0, volume_level))
-                        pygame.mixer.music.set_volume(volume_level)
 
         pygame.display.flip()
 

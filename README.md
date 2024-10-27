@@ -1,6 +1,6 @@
 # Pong
 
-Run Pong.py to start the game.
+Run main.py to start the game.
 
 Enjoy and feel free to clone make enhancements.
 
