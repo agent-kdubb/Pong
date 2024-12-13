@@ -25,4 +25,16 @@ A recreation of the classic Atari Pong game built using the Python `pygame` libr
    ```bash
    python main.py
 
+Usage
+
+	•	Use the keyboard to control the paddles:
+	•	Player 1: W (up), S (down)
+	•	Player 2: Up Arrow (up), Down Arrow (down)
+	•	The first player to reach 10 points wins!
+
+License
+
+This project is licensed under the MIT License.
+
+
 Enjoy and feel free to clone make enhancements.
